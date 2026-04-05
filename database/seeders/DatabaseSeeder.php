@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Book;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,5 +24,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@bookstore.com',
             'role' => 'admin',
         ]);
+
+        Category::factory(5)->create();
+        
+        Book::factory(20)->create();
     }
 }
