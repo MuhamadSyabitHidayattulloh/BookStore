@@ -57,6 +57,28 @@ class Explore extends Component
         return Category::all();
     }
 
+    #[Computed]
+    public function cartBookIds()
+    {
+        if (! Auth::check()) {
+            return collect();
+        }
+
+        return Cart::where('user_id', Auth::id())
+            ->pluck('book_id')
+            ->map(fn ($id) => (int) $id);
+    }
+
+    #[Computed]
+    public function selectedBookInCart()
+    {
+        if (! $this->selectedBook) {
+            return false;
+        }
+
+        return $this->cartBookIds->contains((int) $this->selectedBook->id);
+    }
+
     public function showDetail($id)
     {
         $this->selectedBook = Book::with('category')->find($id);
@@ -80,7 +102,9 @@ class Explore extends Component
             ->first();
 
         if ($cart) {
-            $cart->increment('quantity');
+            session()->flash('warning', 'Buku ini sudah ada di keranjang Anda.');
+
+            return;
         } else {
             Cart::create([
                 'user_id' => Auth::id(),
@@ -88,8 +112,6 @@ class Explore extends Component
                 'quantity' => 1,
             ]);
         }
-
-        $this->closeModal();
 
         // Kirim notifikasi (opsional)
         session()->flash('message', 'Buku berhasil ditambahkan ke keranjang!');

@@ -122,6 +122,7 @@ class Index extends Component
             Storage::disk('public')->delete($user->avatar);
         }
         $user->delete();
+        session()->flash('message', 'User berhasil dihapus.');
     }
 
     private function resetFields()

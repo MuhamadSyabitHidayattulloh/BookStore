@@ -16,6 +16,10 @@
                 </svg>
             </div>
         </div>
+
+        <p wire:loading wire:target="search,categoryId" class="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-blue-200">
+            Memuat hasil pencarian...
+        </p>
     </div>
 
     <!-- Filter Kategori -->
@@ -27,6 +31,7 @@
             </button>
             @foreach ($this->categories as $cat)
                 <button wire:click="$set('categoryId', {{ $cat->id }})"
+                    wire:loading.attr="disabled" wire:target="categoryId"
                     class="px-5 py-2 rounded-full text-sm font-bold transition {{ $categoryId == $cat->id ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
                     {{ $cat->name }}
                 </button>
@@ -39,6 +44,11 @@
                 <div wire:click="showDetail({{ $book->id }})" class="group cursor-pointer">
                     <div
                         class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-sm bg-gray-100 mb-3 border border-gray-100">
+                        @if ($this->cartBookIds->contains((int) $book->id))
+                            <span class="absolute left-2 top-2 z-10 rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                                Di Keranjang
+                            </span>
+                        @endif
                         <img src="{{ asset('storage/' . $book->cover) }}"
                             class="h-full w-full object-cover group-hover:scale-110 transition duration-500">
                         <div
@@ -126,11 +136,19 @@
                             <p class="text-3xl font-black text-gray-900">Rp {{ number_format($selectedBook->price, 0, ',', '.') }}
                             </p>
                         </div>
-                        <button wire:click="addToCart({{ $selectedBook->id }})"
-                            class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 shadow-xl shadow-blue-200 transition active:scale-95">
-                            <span wire:loading.remove wire:target="addToCart">Tambah ke Keranjang</span>
-                            <span wire:loading wire:target="addToCart">Memproses...</span>
-                        </button>
+
+                        @if ($this->selectedBookInCart)
+                            <a href="{{ route('user.cart') }}"
+                                class="inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-8 py-4 font-bold text-emerald-700 ring-1 ring-emerald-200 transition hover:bg-emerald-100">
+                                Sudah di Keranjang
+                            </a>
+                        @else
+                            <button wire:click="addToCart({{ $selectedBook->id }})" wire:loading.attr="disabled" wire:target="addToCart"
+                                class="rounded-2xl bg-blue-600 px-8 py-4 font-bold text-white shadow-xl shadow-blue-200 transition active:scale-95 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                                <span wire:loading.remove wire:target="addToCart">Tambah ke Keranjang</span>
+                                <span wire:loading wire:target="addToCart">Memproses...</span>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>

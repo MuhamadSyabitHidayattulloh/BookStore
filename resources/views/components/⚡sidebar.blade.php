@@ -62,8 +62,9 @@ new class extends Component
     </nav>
 
     <div class="border-t border-slate-200 bg-slate-50 p-4">
-        <button wire:click="logout" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-50 px-4 py-4 text-xs font-black uppercase tracking-widest text-red-600 transition hover:bg-red-600 hover:text-white">
-            Logout ↩
+        <button wire:click="logout" wire:loading.attr="disabled" wire:target="logout" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-50 px-4 py-4 text-xs font-black uppercase tracking-widest text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
+            <span wire:loading.remove wire:target="logout">Logout ↩</span>
+            <span wire:loading wire:target="logout">Keluar...</span>
         </button>
     </div>
 </aside>

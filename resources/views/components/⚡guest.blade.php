@@ -27,6 +27,9 @@ new class extends Component
             <a href="{{ route('home') }}#about" class="rounded-full px-4 py-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
                 About
             </a>
+            <a href="{{ route('home') }}#popular" class="rounded-full px-4 py-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
+                Popular
+            </a>
             <a href="{{ route('home') }}#contact" class="rounded-full px-4 py-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
                 Contacts
             </a>

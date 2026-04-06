@@ -1,5 +1,5 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-gray-100">
+<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-10">
+    <div class="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
         <!-- Tab Switcher -->
         <div class="flex border-b">
             <button wire:click="$set('isLogin', true)" class="w-1/2 py-4 text-sm font-bold transition {{ $isLogin ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/30' : 'text-gray-400 hover:text-gray-600' }}">
@@ -28,8 +28,9 @@
                         <input type="password" wire:model="password" class="w-full mt-1 border rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         @error('password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition duration-200">
-                        Masuk Ke Akun
+                    <button type="submit" wire:loading.attr="disabled" wire:target="login" class="w-full rounded-xl bg-blue-600 py-3 font-bold text-white shadow-lg shadow-blue-200 transition duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                        <span wire:loading.remove wire:target="login">Masuk Ke Akun</span>
+                        <span wire:loading wire:target="login">Memproses...</span>
                     </button>
                 </form>
             @else
@@ -66,8 +67,9 @@
                         @error('avatar') <span class="text-red-500 text-xs block">{{ $message }}</span> @enderror
                     </div>
 
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition duration-200">
-                        Daftar Sekarang
+                    <button type="submit" wire:loading.attr="disabled" wire:target="register" class="w-full rounded-xl bg-blue-600 py-3 font-bold text-white shadow-lg shadow-blue-200 transition duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                        <span wire:loading.remove wire:target="register">Daftar Sekarang</span>
+                        <span wire:loading wire:target="register">Memproses...</span>
                     </button>
                 </form>
             @endif

@@ -24,8 +24,10 @@ class Index extends Component
     public function orders()
     {
         return Order::with(['user', 'items.book'])
-            ->where('order_number', 'like', '%'.$this->search.'%')
-            ->orWhereHas('user', fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
+            ->where(function ($query) {
+                $query->where('order_number', 'like', '%'.$this->search.'%')
+                    ->orWhereHas('user', fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'));
+            })
             ->latest()
             ->paginate(10);
     }

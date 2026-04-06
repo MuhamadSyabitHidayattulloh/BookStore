@@ -8,10 +8,10 @@
 
         @if ($this->items->count() > 0)
             <div class="flex gap-3">
-                <button type="button" wire:click="selectAllItems" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600 transition hover:border-blue-200 hover:text-blue-700">
+                <button type="button" wire:click="selectAllItems" wire:loading.attr="disabled" wire:target="selectAllItems" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600 transition hover:border-blue-200 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-70">
                     Pilih Semua
                 </button>
-                <button type="button" wire:click="deselectAllItems" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600 transition hover:border-blue-200 hover:text-blue-700">
+                <button type="button" wire:click="deselectAllItems" wire:loading.attr="disabled" wire:target="deselectAllItems" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600 transition hover:border-blue-200 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-70">
                     Kosongkan
                 </button>
             </div>
@@ -90,8 +90,9 @@
                     </div>
                     @error('selectedItems') <span class="mt-3 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
 
-                    <button wire:click="checkout" class="mt-6 w-full rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300" @disabled(empty($selectedItems))>
-                        Checkout Sekarang
+                    <button wire:click="checkout" wire:loading.attr="disabled" wire:target="checkout" class="mt-6 w-full rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300" @disabled(empty($selectedItems))>
+                        <span wire:loading.remove wire:target="checkout">Checkout Sekarang</span>
+                        <span wire:loading wire:target="checkout">Memproses Checkout...</span>
                     </button>
                 </div>
             </div>

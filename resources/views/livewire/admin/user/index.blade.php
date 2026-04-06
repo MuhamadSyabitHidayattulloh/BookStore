@@ -1,23 +1,35 @@
-<div class="p-6">
-    <!-- Header & Search -->
-    <div class="flex justify-between items-center mb-4 gap-4">
-        <div class="relative w-full max-w-xs text-gray-400 focus-within:text-gray-600">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </span>
-            <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama atau email..." 
-                class="w-full border rounded-lg pl-10 pr-4 py-2 shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
+<div class="space-y-6">
+    <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <p class="text-xs font-black uppercase tracking-[0.3em] text-emerald-600">User Management</p>
+                <h1 class="mt-2 text-2xl font-black text-slate-900">Kelola Akun Pengguna</h1>
+                <p class="mt-1 text-sm text-slate-500">Atur role, data profil, dan informasi kontak user secara terstruktur.</p>
+            </div>
+
+            <div class="flex gap-3">
+                <div class="relative w-full max-w-xs text-slate-400 focus-within:text-slate-600">
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama atau email..."
+                        class="w-full rounded-xl border border-slate-200 py-2 pl-10 pr-4 text-sm outline-none transition focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                </div>
+
+                <button wire:click="create" wire:loading.attr="disabled" wire:target="create" class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                    + User
+                </button>
+            </div>
         </div>
-        <button wire:click="create" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 shadow transition">+ User</button>
-    </div>
 
-    <!-- Alert -->
-    @if (session()->has('message')) <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm font-medium">{{ session('message') }}</div> @endif
+        <p wire:loading wire:target="search,create,save,delete,edit" class="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-emerald-500">
+            Memproses data user...
+        </p>
+    </section>
 
-    <!-- Table -->
-    <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead class="bg-gray-50 text-left font-medium text-gray-900">
+    <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-slate-600">
                 <tr>
                     <th class="px-4 py-3">User</th>
                     <th class="px-4 py-3">Role</th>
@@ -26,101 +38,112 @@
                     <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
-                @foreach ($this->users as $user)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3 flex items-center gap-3">
-                            <img src="{{ $user->avatar ? asset('storage/'.$user->avatar) : 'https://ui-avatars.com?name='.$user->name }}" class="h-10 w-10 rounded-full object-cover border shadow-sm">
-                            <div>
-                                <p class="font-bold text-gray-900">{{ $user->name }}</p>
-                                <p class="text-xs text-gray-500">{{ $user->email }}</p>
+            <tbody class="divide-y divide-slate-200">
+                @forelse ($this->users as $user)
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-3">
+                                <img src="{{ $user->avatar ? asset('storage/'.$user->avatar) : 'https://ui-avatars.com?name='.$user->name }}" class="h-10 w-10 rounded-full border border-slate-200 object-cover shadow-sm">
+                                <div>
+                                    <p class="font-bold text-slate-900">{{ $user->name }}</p>
+                                    <p class="text-xs text-slate-500">{{ $user->email }}</p>
+                                </div>
                             </div>
                         </td>
                         <td class="px-4 py-3">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ $user->role == 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700' }}">
+                            <span class="rounded-full px-2.5 py-1 text-xs font-bold {{ $user->role == 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-700' }}">
                                 {{ ucfirst($user->role) }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-gray-600">{{ $user->phone ?? '-' }}</td>
-                        <td class="px-4 py-3 text-gray-600 truncate max-w-xs">{{ $user->address ?? '-' }}</td>
-                        <td class="px-4 py-3 text-center space-x-2">
-                            <button wire:click="edit({{ $user->id }})" class="text-amber-600 font-bold hover:underline">Edit</button>
-                            <button wire:click="delete({{ $user->id }})" wire:confirm="Hapus user ini?" class="text-red-600 font-bold hover:underline">Hapus</button>
+                        <td class="px-4 py-3 text-slate-600">{{ $user->phone ?? '-' }}</td>
+                        <td class="max-w-xs truncate px-4 py-3 text-slate-600">{{ $user->address ?? '-' }}</td>
+                        <td class="space-x-2 px-4 py-3 text-center">
+                            <button wire:click="edit({{ $user->id }})" wire:loading.attr="disabled" wire:target="edit({{ $user->id }})" class="font-bold text-amber-600 hover:text-amber-700 disabled:opacity-60">Edit</button>
+                            <button wire:click="delete({{ $user->id }})" wire:confirm="Hapus user ini?" wire:loading.attr="disabled" wire:target="delete({{ $user->id }})" class="font-bold text-red-600 hover:text-red-700 disabled:opacity-60">Hapus</button>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-4 py-12 text-center text-slate-500">Belum ada data user.</td>
+                    </tr>
+                @endforelse
             </tbody>
-            <tfoot><tr><td colspan="5" class="px-4 py-3 bg-gray-50 border-t">{{ $this->users->links() }}</td></tr></tfoot>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="border-t bg-slate-50 px-4 py-3">{{ $this->users->links() }}</td>
+                </tr>
+            </tfoot>
         </table>
-    </div>
+    </section>
 
-    <!-- Invisible Backdrop Modal -->
     @if($isOpen)
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-transparent">
-        <div class="fixed inset-0" wire:click="$set('isOpen', false)"></div>
-        <div class="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-md p-6 max-h-[95vh] overflow-y-auto">
-            <h2 class="text-lg font-bold mb-4 border-b pb-2">{{ $userId ? 'Edit User' : 'Tambah User' }}</h2>
-            
-            <form wire:submit.prevent="save" class="space-y-4">
-                <!-- Avatar Preview -->
-                <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300">
-                    @if ($avatar)
-                        <img src="{{ $avatar->temporaryUrl() }}" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow">
-                    @elseif($oldAvatar)
-                        <img src="{{ asset('storage/' . $oldAvatar) }}" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow">
-                    @else
-                        <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400"><svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg></div>
-                    @endif
-                    <div class="flex-1">
-                        <input type="file" wire:model="avatar" class="text-xs">
-                        <p class="text-[10px] text-gray-500 mt-1 italic leading-tight">PNG, JPG (Max 1MB). Kosongkan jika tidak ingin mengubah.</p>
-                        @error('avatar') <span class="text-red-500 text-[10px]">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-transparent px-4">
+            <div class="fixed inset-0" wire:click="$set('isOpen', false)"></div>
+            <div class="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+                <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $userId ? 'Edit User' : 'Tambah User' }}</h2>
 
-                <div class="grid grid-cols-2 gap-3">
+                <form wire:submit.prevent="save" class="space-y-4">
+                    <div class="flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-3">
+                        @if ($avatar)
+                            <img src="{{ $avatar->temporaryUrl() }}" class="h-16 w-16 rounded-full border-2 border-white object-cover shadow">
+                        @elseif($oldAvatar)
+                            <img src="{{ asset('storage/' . $oldAvatar) }}" class="h-16 w-16 rounded-full border-2 border-white object-cover shadow">
+                        @else
+                            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-slate-200 text-slate-400">
+                                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+                            </div>
+                        @endif
+                        <div class="flex-1">
+                            <input type="file" wire:model="avatar" class="text-xs">
+                            <p class="mt-1 text-[10px] italic text-slate-500">PNG/JPG max 1MB.</p>
+                            @error('avatar') <span class="text-[10px] font-bold text-red-500">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <input type="text" wire:model="name" placeholder="Nama Lengkap" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                            @error('name') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <input type="email" wire:model="email" placeholder="Email" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                            @error('email') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <input type="password" wire:model="password" placeholder="Password {{ $userId ? '(Opsional)' : '' }}" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                            @error('password') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <select wire:model="role" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            @error('role') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
                     <div>
-                        <input type="text" wire:model="name" placeholder="Nama Lengkap" class="w-full border rounded-lg p-2 text-sm">
-                        @error('name') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
+                        <input type="text" wire:model="phone" placeholder="Nomor Telepon" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                        @error('phone') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>
+
                     <div>
-                        <input type="email" wire:model="email" placeholder="Email" class="w-full border rounded-lg p-2 text-sm">
-                        @error('email') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
+                        <textarea wire:model="address" placeholder="Alamat Lengkap" class="h-20 w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100"></textarea>
+                        @error('address') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <input type="password" wire:model="password" placeholder="Password {{ $userId ? '(Opsional)' : '' }}" class="w-full border rounded-lg p-2 text-sm">
-                        @error('password') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
+                    <div class="flex justify-end gap-2 border-t pt-4">
+                        <button type="button" wire:click="$set('isOpen', false)" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
+                        <button type="submit" wire:loading.attr="disabled" wire:target="save" class="rounded-xl bg-emerald-600 px-5 py-2 text-sm font-bold text-white shadow transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                            <span wire:loading.remove wire:target="save">{{ $userId ? 'Simpan Perubahan' : 'Simpan User' }}</span>
+                            <span wire:loading wire:target="save">Menyimpan...</span>
+                        </button>
                     </div>
-                    <div>
-                        <select wire:model="role" class="w-full border rounded-lg p-2 text-sm">
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                        @error('role') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <input type="text" wire:model="phone" placeholder="Nomor Telepon (Contoh: 08123...)" class="w-full border rounded-lg p-2 text-sm">
-                    @error('phone') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
-                    <textarea wire:model="address" placeholder="Alamat Lengkap" class="w-full border rounded-lg p-2 text-sm h-20"></textarea>
-                    @error('address') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div class="flex justify-end gap-2 pt-4 border-t">
-                    <button type="button" wire:click="$set('isOpen', false)" class="text-gray-500 text-sm hover:text-gray-700">Batal</button>
-                    <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-lg text-sm font-bold shadow hover:bg-emerald-700 transition">
-                        {{ $userId ? 'Simpan Perubahan' : 'Simpan User' }}
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
     @endif
 </div>

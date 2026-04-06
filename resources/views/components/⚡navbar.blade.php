@@ -38,8 +38,9 @@ new class extends Component
                 <span class="text-xs font-bold text-slate-900">{{ auth()->user()->name }}</span>
                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">{{ auth()->user()->role }}</span>
             </div>
-            <button wire:click="logout" class="rounded-full bg-red-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-600 transition hover:bg-red-600 hover:text-white">
-                Logout
+            <button wire:click="logout" wire:loading.attr="disabled" wire:target="logout" class="rounded-full bg-red-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
+                <span wire:loading.remove wire:target="logout">Logout</span>
+                <span wire:loading wire:target="logout">Keluar...</span>
             </button>
         </div>
     </div>

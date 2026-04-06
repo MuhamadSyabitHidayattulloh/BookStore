@@ -63,6 +63,7 @@ class Index extends Component
             return session()->flash('error', 'Kategori ada isinya!');
         }
         $cat->delete();
+        session()->flash('message', 'Kategori berhasil dihapus.');
     }
 
     private function resetFields()

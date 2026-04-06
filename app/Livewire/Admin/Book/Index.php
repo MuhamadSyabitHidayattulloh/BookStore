@@ -47,8 +47,10 @@ class Index extends Component
     public function books()
     {
         return Book::with('category')
-            ->where('title', 'like', '%'.$this->search.'%')
-            ->orWhere('author', 'like', '%'.$this->search.'%')
+            ->where(function ($query) {
+                $query->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('author', 'like', '%'.$this->search.'%');
+            })
             ->latest()
             ->paginate(10);
     }
@@ -120,6 +122,7 @@ class Index extends Component
             Storage::disk('public')->delete($book->cover);
         }
         $book->delete();
+        session()->flash('message', 'Buku berhasil dihapus.');
     }
 
     private function resetFields()

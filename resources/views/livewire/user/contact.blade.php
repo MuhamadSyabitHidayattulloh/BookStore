@@ -1,7 +1,7 @@
-<div class="max-w-4xl mx-auto p-6 lg:py-12">
-    <div class="grid md:grid-cols-2 gap-12 bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+<div class="mx-auto max-w-5xl p-4 sm:p-6 lg:py-12">
+    <div class="grid gap-10 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 md:grid-cols-2">
         <!-- Info Side -->
-        <div class="bg-indigo-600 p-10 text-white flex flex-col justify-between">
+        <div class="flex flex-col justify-between bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 p-10 text-white">
             <div>
                 <h1 class="text-3xl font-black mb-4 uppercase tracking-tighter">Hubungi Kami</h1>
                 <p class="text-indigo-100 leading-relaxed">Halo, <span
@@ -25,13 +25,6 @@
 
         <!-- Form Side -->
         <div class="p-10">
-            @if (session()->has('message'))
-                <div
-                    class="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border border-green-100 font-bold text-sm flex items-center gap-3">
-                    <span>✅</span> {{ session('message') }}
-                </div>
-            @endif
-
             <form wire:submit.prevent="send" class="space-y-5">
                 <!-- Info Pengirim (Auto-filled & Disabled) -->
                 <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-2">
@@ -44,7 +37,7 @@
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Subjek
                         Pesan</label>
-                    <input type="text" wire:model="subject" placeholder="Contoh: Kendala Pembayaran"
+                    <input type="text" wire:model.live="subject" placeholder="Contoh: Kendala Pembayaran"
                         class="w-full border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none transition border text-sm">
                     @error('subject')
                         <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
@@ -55,16 +48,17 @@
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Pesan
                         Anda</label>
-                    <textarea wire:model="message" rows="5" placeholder="Tuliskan detail pertanyaan Anda di sini..."
+                    <textarea wire:model.live="message" rows="5" placeholder="Tuliskan detail pertanyaan Anda di sini..."
                         class="w-full border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none transition border text-sm"></textarea>
                     @error('message')
                         <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <button type="submit"
-                    class="w-full bg-indigo-600 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 active:scale-95">
-                    Kirim Pesan Sekarang
+                <button type="submit" wire:loading.attr="disabled" wire:target="send"
+                    class="w-full rounded-xl bg-indigo-600 py-4 font-black uppercase tracking-widest text-white shadow-lg shadow-indigo-100 transition hover:bg-indigo-700 active:scale-95 disabled:cursor-not-allowed disabled:bg-slate-300">
+                    <span wire:loading.remove wire:target="send">Kirim Pesan Sekarang</span>
+                    <span wire:loading wire:target="send">Mengirim Pesan...</span>
                 </button>
             </form>
         </div>
