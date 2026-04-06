@@ -7,30 +7,30 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-gray-50 font-sans antialiased">
+    <body class="bg-slate-50 font-sans antialiased text-slate-900">
 
     @auth
         @if(auth()->user()->role === 'admin')
             <!-- Layout KHUSUS ADMIN (Sidebar + Header) -->
-            <div class="flex min-h-screen bg-slate-100">
+            <div class="flex min-h-screen bg-slate-50">
                 <!-- Sidebar Component -->
                 <livewire:sidebar />
 
                 <div class="flex-1 flex flex-col">
                     <!-- Top Navbar Admin -->
-                    <header class="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
+                    <header class="border-b border-slate-200 bg-white/95 px-6 py-4 shadow-sm backdrop-blur">
                         <div>
                             <p class="text-sm font-semibold text-slate-900">Selamat datang, {{ auth()->user()->name }}</p>
                             <p class="text-xs text-slate-500">Kelola data buku dan pengguna di panel admin</p>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <div class="rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600">Admin</div>
+                        <div class="mt-4 flex flex-wrap items-center gap-3 sm:mt-0 sm:justify-end">
+                            <div class="rounded-full bg-blue-50 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-blue-700">Admin</div>
                             <span class="text-sm font-medium text-slate-600">{{ auth()->user()->email }}</span>
                         </div>
                     </header>
 
                     <!-- Konten Admin -->
-                    <main class="p-6">
+                    <main class="flex-1 p-4 sm:p-6 lg:p-8">
                         {{ $slot }}
                     </main>
                 </div>
@@ -38,13 +38,14 @@
         @else
             <!-- Layout KHUSUS USER (Navbar di Atas) -->
             <livewire:navbar />
-            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 {{ $slot }}
             </main>
         @endif
     @else
-        <!-- Layout GUEST (Login/Register) -->
-        <main>
+        <!-- Layout GUEST (Login/Register + Landing Page) -->
+        <livewire:guest />
+        <main class="bg-slate-50">
             {{ $slot }}
         </main>
     @endauth
