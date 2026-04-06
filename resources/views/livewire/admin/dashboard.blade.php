@@ -16,7 +16,7 @@
             </div>
             <div>
                 <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Total Pendapatan</p>
-                <p class="text-2xl font-black text-gray-900">${{ number_format($this->stats['total_revenue'], 2) }}</p>
+                <p class="text-2xl font-black text-gray-900">Rp {{ number_format($this->stats['total_revenue'], 0, ',', '.') }}</p>
             </div>
         </div>
 
@@ -81,7 +81,7 @@
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 font-bold text-orange-600 font-mono">{{ $order->order_number }}</td>
                             <td class="px-6 py-4 text-gray-900 font-medium">{{ $order->user->name }}</td>
-                            <td class="px-6 py-4 font-bold text-gray-700">${{ number_format($order->total_price, 2) }}</td>
+                            <td class="px-6 py-4 font-bold text-gray-700">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase
                                     {{ $order->status == 'proccess' ? 'bg-blue-50 text-blue-700' : '' }}

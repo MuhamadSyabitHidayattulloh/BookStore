@@ -27,7 +27,7 @@
                         <td class="px-4 py-3 text-xs"><span
                                 class="bg-blue-50 text-blue-700 px-2 py-1 rounded-full">{{ $book->category->name }}</span>
                         </td>
-                        <td class="px-4 py-3 font-mono text-gray-600">${{ number_format($book->price, 2) }}</td>
+                        <td class="px-4 py-3 font-mono text-gray-600">Rp {{ number_format($book->price, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 {{ $book->stock < 5 ? 'text-red-600 font-bold' : '' }}">{{ $book->stock }}
                         </td>
                         <td class="px-4 py-3 text-center space-x-2">

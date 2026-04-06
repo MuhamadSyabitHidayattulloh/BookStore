@@ -39,9 +39,9 @@
                             <img src="{{ asset('storage/' . $item->book->cover) }}" class="h-16 w-12 rounded-lg object-cover shadow-sm border border-white">
                             <div class="flex-1">
                                 <p class="text-sm font-bold text-slate-900 line-clamp-1">{{ $item->book->title }}</p>
-                                <p class="text-xs text-slate-500">{{ $item->quantity }} x ${{ number_format($item->price, 2) }}</p>
+                                <p class="text-xs text-slate-500">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</p>
                             </div>
-                            <p class="text-sm font-black text-slate-900">${{ number_format($item->quantity * $item->price, 2) }}</p>
+                            <p class="text-sm font-black text-slate-900">Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -49,7 +49,7 @@
                 <!-- Footer Card -->
                 <div class="p-6 bg-white border-t border-slate-50 flex justify-between items-center">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Pembayaran</span>
-                    <span class="text-xl font-black text-slate-900">${{ number_format($order->total_price, 2) }}</span>
+                    <span class="text-xl font-black text-slate-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
                 </div>
             </div>
         @empty

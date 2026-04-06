@@ -50,7 +50,7 @@
                     <h3 class="font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition">
                         {{ $book->title }}</h3>
                     <p class="text-sm text-gray-500 mb-1">{{ $book->author }}</p>
-                    <p class="font-black text-blue-600">${{ number_format($book->price, 2) }}</p>
+                    <p class="font-black text-blue-600">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
                 </div>
             @empty
                 <div class="col-span-full py-20 text-center">
@@ -123,7 +123,7 @@
                     <div class="mt-10 flex items-center justify-between">
                         <div>
                             <p class="text-xs text-gray-400 font-bold">Harga</p>
-                            <p class="text-3xl font-black text-gray-900">${{ number_format($selectedBook->price, 2) }}
+                            <p class="text-3xl font-black text-gray-900">Rp {{ number_format($selectedBook->price, 0, ',', '.') }}
                             </p>
                         </div>
                         <button wire:click="addToCart({{ $selectedBook->id }})"

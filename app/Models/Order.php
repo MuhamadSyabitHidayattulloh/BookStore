@@ -14,6 +14,10 @@ class Order extends Model
         'shipping_address',
     ];
 
+    protected $casts = [
+        'total_price' => 'integer',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

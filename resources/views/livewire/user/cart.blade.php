@@ -38,7 +38,7 @@
                                 <div>
                                     <p class="text-lg font-black text-slate-950">{{ $item->book->title }}</p>
                                     <p class="mt-1 text-sm text-slate-500">{{ $item->book->author }}</p>
-                                    <p class="mt-2 text-sm font-black text-blue-600">${{ number_format($item->book->price, 2) }}</p>
+                                    <p class="mt-2 text-sm font-black text-blue-600">Rp {{ number_format($item->book->price, 0, ',', '.') }}</p>
                                 </div>
                             </div>
 
@@ -86,7 +86,7 @@
                     </div>
                     <div class="mt-3 flex items-center justify-between border-t border-slate-200 pt-4">
                         <span class="text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Total Estimasi</span>
-                        <p class="text-2xl font-black text-slate-950">${{ number_format($this->selectedItemsTotal, 2) }}</p>
+                        <p class="text-2xl font-black text-slate-950">Rp {{ number_format($this->selectedItemsTotal, 0, ',', '.') }}</p>
                     </div>
                     @error('selectedItems') <span class="mt-3 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
 

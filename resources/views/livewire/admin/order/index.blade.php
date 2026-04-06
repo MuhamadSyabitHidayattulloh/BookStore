@@ -23,7 +23,7 @@
                             <p class="font-medium">{{ $order->user->name }}</p>
                             <p class="text-xs text-gray-500">{{ $order->created_at->format('d M Y, H:i') }}</p>
                         </td>
-                        <td class="px-4 py-3 font-semibold">${{ number_format($order->total_price, 2) }}</td>
+                        <td class="px-4 py-3 font-semibold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-xs">
                             <select wire:change="updateStatus({{ $order->id }}, $event.target.value)" 
                                 class="rounded-full px-3 py-1 font-bold border-none ring-1 ring-gray-200 shadow-sm
@@ -68,16 +68,16 @@
                             <img src="{{ asset('storage/'.$item->book->cover) }}" class="w-10 h-14 rounded object-cover">
                             <div class="flex-1">
                                 <p class="font-bold text-sm">{{ $item->book->title }}</p>
-                                <p class="text-xs text-gray-500">{{ $item->quantity }} x ${{ number_format($item->price, 2) }}</p>
+                                <p class="text-xs text-gray-500">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</p>
                             </div>
-                            <p class="font-bold">${{ number_format($item->quantity * $item->price, 2) }}</p>
+                            <p class="font-bold">Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</p>
                         </div>
                     @endforeach
                 </div>
 
                 <div class="flex justify-between font-bold text-lg border-t pt-3">
                     <span>Total Bayar</span>
-                    <span class="text-orange-600">${{ number_format($selectedOrder->total_price, 2) }}</span>
+                    <span class="text-orange-600">Rp {{ number_format($selectedOrder->total_price, 0, ',', '.') }}</span>
                 </div>
             </div>
         </div>

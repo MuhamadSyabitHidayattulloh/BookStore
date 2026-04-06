@@ -19,6 +19,10 @@ class Book extends Model
         'cover',
     ];
 
+    protected $casts = [
+        'price' => 'integer',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
