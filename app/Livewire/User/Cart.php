@@ -12,10 +12,40 @@ use Livewire\Component;
 
 class Cart extends Component
 {
+    public $phone = '';
+
+    public $address = '';
+
+    public $selectedItems = [];
+
     #[Computed]
     public function items()
     {
         return CartModel::with('book')->where('user_id', Auth::id())->get();
+    }
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $this->phone = $user?->phone ?? '';
+        $this->address = $user?->address ?? '';
+        $this->selectedItems = $this->items->pluck('id')->map(fn ($id) => (string) $id)->all();
+    }
+
+    public function updatedSelectedItems()
+    {
+        $this->selectedItems = array_values(array_unique($this->selectedItems));
+    }
+
+    public function selectAllItems()
+    {
+        $this->selectedItems = $this->items->pluck('id')->map(fn ($id) => (string) $id)->all();
+    }
+
+    public function deselectAllItems()
+    {
+        $this->selectedItems = [];
     }
 
     public function increment($id)
@@ -34,27 +64,53 @@ class Cart extends Component
 
     public function removeItem($id)
     {
-        Cart::destroy($id);
+        CartModel::destroy($id);
+
+        $this->selectedItems = array_values(array_filter(
+            $this->selectedItems,
+            fn ($selectedId) => (string) $selectedId !== (string) $id
+        ));
     }
 
     public function checkout()
     {
-        if ($this->items->isEmpty()) {
+        $this->validate([
+            'phone' => ['required', 'string', 'max:20'],
+            'address' => ['required', 'string', 'max:255'],
+            'selectedItems' => ['required', 'array', 'min:1'],
+        ]);
+
+        $selectedItems = $this->items->filter(function ($item) {
+            return in_array((string) $item->id, $this->selectedItems, true);
+        });
+
+        if ($selectedItems->isEmpty()) {
+            $this->addError('selectedItems', 'Pilih minimal satu item untuk checkout.');
+
             return;
         }
 
         DB::transaction(function () {
-            $total = $this->items->sum(fn ($i) => $i->book->price * $i->quantity);
+            Auth::user()->update([
+                'phone' => $this->phone,
+                'address' => $this->address,
+            ]);
+
+            $selectedItems = $this->items->filter(function ($item) {
+                return in_array((string) $item->id, $this->selectedItems, true);
+            });
+
+            $total = $selectedItems->sum(fn ($item) => $item->book->price * $item->quantity);
 
             $order = Order::create([
                 'order_number' => 'ORD-'.strtoupper(uniqid()),
                 'user_id' => Auth::id(),
                 'total_price' => $total,
                 'status' => 'proccess',
-                'shipping_address' => Auth::user()->address ?? 'Alamat belum diatur',
+                'shipping_address' => $this->address,
             ]);
 
-            foreach ($this->items as $item) {
+            foreach ($selectedItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'book_id' => $item->book_id,
@@ -65,10 +121,21 @@ class Cart extends Component
                 $item->book->decrement('stock', $item->quantity);
             }
 
-            CartModel::where('user_id', Auth::id())->delete();
+            CartModel::where('user_id', Auth::id())
+                ->whereIn('id', $selectedItems->pluck('id'))
+                ->delete();
         });
 
         return redirect()->route('user.orders')->with('message', 'Pesanan berhasil dibuat!');
+    }
+
+    public function getSelectedItemsTotalProperty()
+    {
+        return $this->items
+            ->filter(function ($item) {
+                return in_array((string) $item->id, $this->selectedItems, true);
+            })
+            ->sum(fn ($item) => $item->book->price * $item->quantity);
     }
 
     public function render()
