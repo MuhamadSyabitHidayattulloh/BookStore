@@ -103,7 +103,6 @@ class Cart extends Component
             $total = $selectedItems->sum(fn ($item) => $item->book->price * $item->quantity);
 
             $order = Order::create([
-                'order_number' => 'ORD-'.strtoupper(uniqid()),
                 'user_id' => Auth::id(),
                 'total_price' => $total,
                 'status' => 'proccess',
