@@ -81,7 +81,14 @@ class Explore extends Component
 
     public function showDetail($id)
     {
-        $this->selectedBook = Book::with('category')->find($id);
+        $book = Book::with('category')->find($id);
+        if (! $book) {
+            $this->dispatch('toast', type: 'error', message: 'Buku tidak ditemukan.');
+
+            return;
+        }
+
+        $this->selectedBook = $book;
     }
 
     public function closeModal()
@@ -96,6 +103,13 @@ class Explore extends Component
             return redirect()->route('login');
         }
 
+        $book = Book::find($bookId);
+        if (! $book) {
+            $this->dispatch('toast', type: 'error', message: 'Buku tidak ditemukan.');
+
+            return;
+        }
+
         // Cek apakah buku sudah ada di keranjang user ini
         $cart = Cart::where('user_id', Auth::id())
             ->where('book_id', $bookId)
@@ -108,7 +122,7 @@ class Explore extends Component
         } else {
             Cart::create([
                 'user_id' => Auth::id(),
-                'book_id' => $bookId,
+                'book_id' => $book->id,
                 'quantity' => 1,
             ]);
         }

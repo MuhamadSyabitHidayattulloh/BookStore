@@ -19,7 +19,7 @@ class Dashboard extends Component
             'total_users'      => User::where('role', 'user')->count(),
             'total_categories' => Category::count(),
             'total_revenue'    => Order::where('status', 'completed')->sum('total_price'),
-            'pending_orders'   => Order::where('status', 'proccess')->count(),
+            'pending_orders'   => Order::where('status', 'process')->count(),
         ];
     }
 

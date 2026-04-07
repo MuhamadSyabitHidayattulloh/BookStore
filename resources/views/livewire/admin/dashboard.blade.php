@@ -60,7 +60,7 @@
                             <td class="px-6 py-4 font-bold text-slate-700">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">
                                 <span class="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em]
-                                    {{ $order->status == 'proccess' ? 'bg-blue-50 text-blue-700' : '' }}
+                                    {{ $order->status == 'process' ? 'bg-blue-50 text-blue-700' : '' }}
                                     {{ $order->status == 'shipped' ? 'bg-orange-50 text-orange-700' : '' }}
                                     {{ $order->status == 'completed' ? 'bg-emerald-50 text-emerald-700' : '' }}
                                     {{ $order->status == 'cancelled' ? 'bg-red-50 text-red-700' : '' }}">

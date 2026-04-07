@@ -11,6 +11,8 @@ class Index extends Component
 {
     use WithPagination;
 
+    private const ALLOWED_STATUSES = ['process', 'shipped', 'completed', 'cancelled'];
+
     public $search = '';
 
     public $selectedOrder = null; // Untuk Modal Detail
@@ -34,13 +36,33 @@ class Index extends Component
 
     public function updateStatus($orderId, $status)
     {
-        Order::find($orderId)->update(['status' => $status]);
+        if (! in_array($status, self::ALLOWED_STATUSES, true)) {
+            $this->dispatch('toast', type: 'error', message: 'Status pesanan tidak valid.');
+
+            return;
+        }
+
+        $order = Order::find($orderId);
+        if (! $order) {
+            $this->dispatch('toast', type: 'error', message: 'Pesanan tidak ditemukan.');
+
+            return;
+        }
+
+        $order->update(['status' => $status]);
         $this->dispatch('toast', type: 'success', message: 'Status pesanan berhasil diperbarui!');
     }
 
     public function showDetail($id)
     {
-        $this->selectedOrder = Order::with(['user', 'items.book'])->find($id);
+        $order = Order::with(['user', 'items.book'])->find($id);
+        if (! $order) {
+            $this->dispatch('toast', type: 'error', message: 'Pesanan tidak ditemukan.');
+
+            return;
+        }
+
+        $this->selectedOrder = $order;
     }
 
     public function closeModal(): void

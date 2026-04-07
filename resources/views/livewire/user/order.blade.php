@@ -25,7 +25,7 @@
                         <p class="text-sm font-bold text-slate-700">{{ $order->created_at->format('d M Y') }}</p>
                     </div>
                     <span class="rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em]
-                        {{ $order->status == 'proccess' ? 'bg-blue-50 text-blue-600' : '' }}
+                        {{ $order->status == 'process' ? 'bg-blue-50 text-blue-600' : '' }}
                         {{ $order->status == 'shipped' ? 'bg-amber-50 text-amber-600' : '' }}
                         {{ $order->status == 'completed' ? 'bg-emerald-50 text-emerald-600' : '' }}
                         {{ $order->status == 'cancelled' ? 'bg-red-50 text-red-600' : '' }}">

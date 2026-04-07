@@ -16,13 +16,26 @@ class Index extends Component
 
     public function markAsRead($id)
     {
-        Contact::find($id)->update(['is_read' => true]);
+        $contact = Contact::find($id);
+        if (! $contact) {
+            $this->dispatch('toast', type: 'error', message: 'Pesan tidak ditemukan.');
+
+            return;
+        }
+
+        $contact->update(['is_read' => true]);
         $this->dispatch('toast', type: 'success', message: 'Pesan ditandai sebagai telah dibaca.');
     }
 
     public function delete($id)
     {
-        Contact::destroy($id);
+        $deleted = Contact::where('id', $id)->delete();
+        if (! $deleted) {
+            $this->dispatch('toast', type: 'error', message: 'Pesan tidak ditemukan.');
+
+            return;
+        }
+
         $this->dispatch('toast', type: 'success', message: 'Pesan berhasil dihapus.');
     }
 

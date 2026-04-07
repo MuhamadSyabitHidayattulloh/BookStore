@@ -44,11 +44,11 @@
                         <td class="px-4 py-3 text-xs">
                             <select wire:change="updateStatus({{ $order->id }}, $event.target.value)" wire:loading.attr="disabled" wire:target="updateStatus"
                                 class="rounded-full border-none px-3 py-1 font-bold ring-1 ring-slate-200 shadow-sm
-                                {{ $order->status == 'proccess' ? 'bg-blue-50 text-blue-700' : '' }}
+                                {{ $order->status == 'process' ? 'bg-blue-50 text-blue-700' : '' }}
                                 {{ $order->status == 'shipped' ? 'bg-orange-50 text-orange-700' : '' }}
                                 {{ $order->status == 'completed' ? 'bg-emerald-50 text-emerald-700' : '' }}
                                 {{ $order->status == 'cancelled' ? 'bg-red-50 text-red-700' : '' }}">
-                                <option value="proccess" {{ $order->status == 'proccess' ? 'selected' : '' }}>DI PROSES</option>
+                                <option value="process" {{ $order->status == 'process' ? 'selected' : '' }}>DI PROSES</option>
                                 <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>DI KIRIM</option>
                                 <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>SELESAI</option>
                                 <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>BATAL</option>
