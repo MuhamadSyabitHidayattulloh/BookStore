@@ -4,17 +4,10 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public function logout()
-    {
-        auth()->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
-        return redirect()->route('login');
-    }
+    // Navigation only; logout is handled by the shared POST route.
 }; ?>
 
-<aside class="flex min-h-screen w-72 flex-shrink-0 flex-col border-r border-slate-200 bg-white text-slate-900 shadow-sm">
+<aside class="hidden min-h-screen w-72 flex-shrink-0 flex-col border-r border-slate-200 bg-white text-slate-900 shadow-sm md:flex">
     <div class="border-b border-slate-200 px-6 py-8">
         <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-xl font-black text-white shadow-lg shadow-blue-200">B</div>
@@ -62,9 +55,11 @@ new class extends Component
     </nav>
 
     <div class="border-t border-slate-200 bg-slate-50 p-4">
-        <button wire:click="logout" wire:loading.attr="disabled" wire:target="logout" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-50 px-4 py-4 text-xs font-black uppercase tracking-widest text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
-            <span wire:loading.remove wire:target="logout">Logout ↩</span>
-            <span wire:loading wire:target="logout">Keluar...</span>
-        </button>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-50 px-4 py-4 text-xs font-black uppercase tracking-widest text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
+                Logout ↩
+            </button>
+        </form>
     </div>
 </aside>

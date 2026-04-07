@@ -4,18 +4,11 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public function logout()
-    {
-        auth()->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
-        return redirect()->route('login');
-    }
+    // Navigation only; logout is handled by the shared POST route.
 }; ?>
 
-<header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-xl shadow-sm">
-    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
+<header class="js-auto-hide-header auto-hide-transition sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-xl shadow-sm">
+    <div class="mx-auto flex max-w-7xl flex-row items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <a href="{{ route('user.explore') }}" class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-lg font-black text-white shadow-lg shadow-blue-200">
                 B
@@ -26,22 +19,41 @@ new class extends Component
             </div>
         </a>
 
-        <nav class="flex flex-wrap items-center gap-2 text-sm font-bold sm:gap-4 md:gap-6">
+        <nav class="hidden flex-wrap items-center gap-2 text-sm font-bold lg:flex lg:gap-6">
             <a href="{{ route('user.explore') }}" class="rounded-full px-4 py-2 transition {{ request()->routeIs('user.explore') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Explore</a>
             <a href="{{ route('user.cart') }}" class="rounded-full px-4 py-2 transition {{ request()->routeIs('user.cart') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Keranjang</a>
             <a href="{{ route('user.orders') }}" class="rounded-full px-4 py-2 transition {{ request()->routeIs('user.orders') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Pesanan</a>
             <a href="{{ route('user.contact') }}" class="rounded-full px-4 py-2 transition {{ request()->routeIs('user.contact') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Contact</a>
         </nav>
 
-        <div class="flex items-center justify-between gap-4 md:justify-end">
+        <div class="flex items-center gap-4">
             <div class="hidden sm:flex flex-col text-right">
                 <span class="text-xs font-bold text-slate-900">{{ auth()->user()->name }}</span>
                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">{{ auth()->user()->role }}</span>
             </div>
-            <button wire:click="logout" wire:loading.attr="disabled" wire:target="logout" class="rounded-full bg-red-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
-                <span wire:loading.remove wire:target="logout">Logout</span>
-                <span wire:loading wire:target="logout">Keluar...</span>
-            </button>
+            <form action="{{ route('logout') }}" method="POST" class="block sm:hidden lg:block">
+                @csrf
+                <button type="submit" class="rounded-full bg-red-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-70">
+                    Logout
+                </button>
+            </form>
+
+            <livewire:hamburger-menu>
+                <nav class="space-y-2 p-4">
+                    <a href="{{ route('user.explore') }}" @click="menuOpen = false" class="block rounded-2xl px-4 py-3 text-sm font-bold transition {{ request()->routeIs('user.explore') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Explore</a>
+                    <a href="{{ route('user.cart') }}" @click="menuOpen = false" class="block rounded-2xl px-4 py-3 text-sm font-bold transition {{ request()->routeIs('user.cart') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Keranjang</a>
+                    <a href="{{ route('user.orders') }}" @click="menuOpen = false" class="block rounded-2xl px-4 py-3 text-sm font-bold transition {{ request()->routeIs('user.orders') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Pesanan</a>
+                    <a href="{{ route('user.contact') }}" @click="menuOpen = false" class="block rounded-2xl px-4 py-3 text-sm font-bold transition {{ request()->routeIs('user.contact') ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}">Contact</a>
+                    <div class="border-t border-slate-100 pt-2">
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="block w-full rounded-2xl bg-red-50 px-4 py-3 text-center text-sm font-bold text-red-600 transition hover:bg-red-600 hover:text-white">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </nav>
+            </livewire:hamburger-menu>
         </div>
     </div>
 </header>

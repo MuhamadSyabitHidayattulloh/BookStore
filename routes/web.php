@@ -1,19 +1,31 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
+
+Route::livewire('/', 'home')->name('home');
+
 Route::middleware('guest')
     ->group(function () {
         Route::livewire('/login', 'auth.index')->name('login');
         Route::livewire('/register', 'auth.index')->name('register');
-        Route::livewire('/', 'home')->name('home');
     });
 
 Route::middleware('auth')->group(function () {
+    Route::post('/logout', function () {
+        Auth::logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->route('login');
+    })->name('logout');
+
     Route::prefix('admin')
         ->name('admin.')
         ->middleware('role:admin')

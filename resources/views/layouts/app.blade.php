@@ -31,11 +31,11 @@
     @auth
         @if(auth()->user()->role === 'admin')
             <!-- Layout KHUSUS ADMIN (Sidebar + Header) -->
-            <div class="flex min-h-screen bg-slate-50">
+            <div class="flex min-h-screen bg-slate-50 md:flex">
                 <!-- Sidebar Component -->
                 <livewire:sidebar />
 
-                <div class="flex-1 flex flex-col">
+                <div class="flex flex-1 flex-col">
                     <!-- Top Navbar Admin -->
                     <header class="border-b border-slate-200 bg-white/95 px-6 py-4 shadow-sm backdrop-blur">
                         <div class="flex flex-wrap items-end justify-between gap-4">
@@ -46,12 +46,18 @@
                             <div class="flex flex-wrap items-center gap-3 sm:justify-end">
                                 <div class="rounded-full bg-blue-50 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-blue-700">Admin</div>
                                 <span class="text-sm font-medium text-slate-600">{{ auth()->user()->email }}</span>
+                                <form action="{{ route('logout') }}" method="POST" class="sm:hidden">
+                                    @csrf
+                                    <button type="submit" class="rounded-full bg-red-50 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-600 transition hover:bg-red-600 hover:text-white">
+                                        Logout
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </header>
 
                     <!-- Konten Admin -->
-                    <main class="page-enter flex-1 p-4 sm:p-6 lg:p-8">
+                    <main class="page-enter flex-1 px-4 pb-4 pt-4 sm:p-6 lg:p-8">
                         {{ $slot }}
                     </main>
                 </div>
@@ -71,7 +77,9 @@
         </main>
     @endauth
 
-    <div x-data="{ chatOpen: false }" class="fixed bottom-4 right-4 z-[90]">
+    <livewire:bottom-navbar />
+
+    <div x-data="{ chatOpen: false }" class="fixed bottom-20 right-4 z-[90] sm:bottom-4">
         <button
             type="button"
             @click="chatOpen = !chatOpen"

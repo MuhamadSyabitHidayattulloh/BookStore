@@ -29,6 +29,19 @@
     .page-enter {
         animation: page-enter 0.45s ease-out;
     }
+
+    .auto-hide-transition {
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        will-change: transform;
+    }
+
+    .auto-hide-header-hidden {
+        transform: translateY(calc(-100% - 0.75rem));
+    }
+
+    .auto-hide-bottom-hidden {
+        transform: translateY(calc(100% + 1rem));
+    }
 }
 
 @keyframes page-enter {
