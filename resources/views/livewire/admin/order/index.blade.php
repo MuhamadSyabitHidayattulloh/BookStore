@@ -82,6 +82,22 @@
                         <p class="mt-1">{{ $selectedOrder->shipping_address }}</p>
                     </div>
 
+                    <div class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Pembayaran</p>
+                        <p class="mt-1 font-bold text-slate-900">{{ $selectedOrder->payment_method === 'bank_transfer' ? 'Transfer Bank' : 'COD' }}</p>
+
+                        @if ($selectedOrder->payment_method === 'bank_transfer')
+                            @if ($selectedOrder->transfer_proof)
+                                <a href="{{ asset('storage/'.$selectedOrder->transfer_proof) }}" target="_blank" class="mt-2 inline-block text-xs font-bold text-blue-600 transition hover:text-blue-700">
+                                    Lihat Bukti Transfer
+                                </a>
+                                <img src="{{ asset('storage/'.$selectedOrder->transfer_proof) }}" alt="Bukti transfer" class="mt-3 h-40 rounded-xl border border-slate-200 object-cover" />
+                            @else
+                                <p class="mt-1 text-xs font-bold text-red-500">Bukti transfer belum diunggah.</p>
+                            @endif
+                        @endif
+                    </div>
+
                     <div class="space-y-3">
                         @foreach($selectedOrder->items as $item)
                             <div class="flex items-center gap-4 border-b border-slate-100 pb-3">

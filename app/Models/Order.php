@@ -7,11 +7,17 @@ use Illuminate\Support\Str;
 
 class Order extends Model
 {
+    public const PAYMENT_METHOD_COD = 'cod';
+
+    public const PAYMENT_METHOD_BANK_TRANSFER = 'bank_transfer';
+
     protected $fillable = [
         'order_number',
         'user_id',
         'total_price',
         'status',
+        'payment_method',
+        'transfer_proof',
         'shipping_address',
     ];
 

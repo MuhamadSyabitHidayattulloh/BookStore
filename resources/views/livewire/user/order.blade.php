@@ -47,8 +47,21 @@
                 </div>
 
                 <div class="flex items-center justify-between border-t border-slate-100 bg-white p-6">
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Total Pembayaran</span>
-                    <span class="text-xl font-black text-slate-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Metode Pembayaran</p>
+                        <p class="mt-1 text-sm font-black text-slate-800">{{ $order->payment_method === 'bank_transfer' ? 'Transfer Bank' : 'COD' }}</p>
+                        @if ($order->payment_method === 'bank_transfer')
+                            @if ($order->transfer_proof)
+                                <a href="{{ asset('storage/'.$order->transfer_proof) }}" target="_blank" class="mt-2 inline-block text-xs font-bold text-blue-600 transition hover:text-blue-700">
+                                    Klik untuk melihat bukti transfer
+                                </a>
+                            @endif
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Total Pembayaran</p>
+                        <span class="text-xl font-black text-slate-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
+                    </div>
                 </div>
             </article>
         @empty

@@ -9,12 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Cart extends Component
 {
+    use WithFileUploads;
+
     public $phone = '';
 
     public $address = '';
+
+    public $paymentMethod = Order::PAYMENT_METHOD_COD;
+
+    public $transferProof;
 
     public $selectedItems = [];
 
@@ -78,6 +85,8 @@ class Cart extends Component
             'phone' => ['required', 'string', 'max:20'],
             'address' => ['required', 'string', 'max:255'],
             'selectedItems' => ['required', 'array', 'min:1'],
+            'paymentMethod' => ['required', 'in:'.Order::PAYMENT_METHOD_COD.','.Order::PAYMENT_METHOD_BANK_TRANSFER],
+            'transferProof' => ['required_if:paymentMethod,'.Order::PAYMENT_METHOD_BANK_TRANSFER, 'nullable', 'image', 'max:2048'],
         ]);
 
         $selectedItems = $this->items->filter(function ($item) {
@@ -91,6 +100,11 @@ class Cart extends Component
         }
 
         DB::transaction(function () {
+            $transferProofPath = null;
+            if ($this->paymentMethod === Order::PAYMENT_METHOD_BANK_TRANSFER && $this->transferProof) {
+                $transferProofPath = $this->transferProof->store('payment-proofs', 'public');
+            }
+
             Auth::user()->update([
                 'phone' => $this->phone,
                 'address' => $this->address,
@@ -106,6 +120,8 @@ class Cart extends Component
                 'user_id' => Auth::id(),
                 'total_price' => $total,
                 'status' => 'proccess',
+                'payment_method' => $this->paymentMethod,
+                'transfer_proof' => $transferProofPath,
                 'shipping_address' => $this->address,
             ]);
 

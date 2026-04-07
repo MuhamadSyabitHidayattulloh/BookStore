@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('order_number')->unique();
             $table->decimal('total_price', 15, 2);
             $table->enum('status', ['proccess', 'shipped', 'completed', 'cancelled'])->default('proccess');
+            $table->enum('payment_method', ['cod', 'bank_transfer'])->default('cod');
+            $table->string('transfer_proof')->nullable();
             $table->text('shipping_address');
             $table->timestamps();
         });

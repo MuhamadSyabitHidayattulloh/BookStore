@@ -79,6 +79,58 @@
                 </div>
 
                 <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <p class="text-xs font-black uppercase tracking-[0.28em] text-blue-600">Metode Pembayaran</p>
+                    <h2 class="mt-3 text-xl font-black text-slate-950">Pilih cara bayar</h2>
+
+                    <div class="mt-5 space-y-3">
+                        <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 transition hover:border-blue-200">
+                            <input type="radio" wire:model.live="paymentMethod" value="cod" class="mt-1 h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span>
+                                <span class="block text-sm font-black text-slate-900">COD (Bayar di Tempat)</span>
+                                <span class="block text-xs text-slate-500">Bayar saat pesanan diterima.</span>
+                            </span>
+                        </label>
+
+                        <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 transition hover:border-blue-200">
+                            <input type="radio" wire:model.live="paymentMethod" value="bank_transfer" class="mt-1 h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span>
+                                <span class="block text-sm font-black text-slate-900">Transfer Bank</span>
+                                <span class="block text-xs text-slate-500">Transfer ke rekening berikut dan unggah bukti transfer.</span>
+                            </span>
+                        </label>
+                    </div>
+                    @error('paymentMethod') <span class="mt-2 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
+
+                    @if ($paymentMethod === 'bank_transfer')
+                        <div class="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-900">
+                            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-700">Rekening Tujuan</p>
+                            <p class="mt-2 font-black">Bank BCA - 1234567890</p>
+                            <p class="text-xs">a.n. BookStore Indonesia</p>
+
+                            <div class="mt-3 space-y-1 text-xs">
+                                <p>1. Transfer sesuai total checkout.</p>
+                                <p>2. Simpan bukti transfer.</p>
+                                <p>3. Upload bukti sebelum klik checkout.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Bukti Transfer <span class="text-red-500">*</span></label>
+                            <input type="file" wire:model="transferProof" accept="image/*" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100">
+                            @error('transferProof') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
+                            <div wire:loading wire:target="transferProof" class="mt-2 text-xs font-bold text-blue-600">Mengunggah bukti transfer...</div>
+
+                            @if ($transferProof)
+                                <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2">
+                                    <p class="px-2 pb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Preview Bukti Transfer</p>
+                                    <img src="{{ $transferProof->temporaryUrl() }}" alt="Preview bukti transfer" class="h-52 w-full rounded-xl object-cover" />
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                     <p class="text-xs font-black uppercase tracking-[0.28em] text-slate-400">Ringkasan Checkout</p>
                     <div class="mt-4 flex items-center justify-between text-sm text-slate-600">
                         <span>Item dipilih</span>
