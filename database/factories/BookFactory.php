@@ -23,8 +23,8 @@ class BookFactory extends Factory
             'title' => fake()->sentence(),
             'author' => fake()->name(),
             'description' => fake()->paragraph(),
-            'price' => fake()->randomFloat(2, 5, 100),
-            'stock' => fake()->numberBetween(1, 50),
+            'price' => fake()->randomFloat(2, 50000, 150000),
+            'stock' => fake()->numberBetween(1, 500),
             'cover' => fake()->imageUrl(200, 300, 'books', true),
         ];
     }

@@ -60,7 +60,12 @@
                     <h3 class="font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition">
                         {{ $book->title }}</h3>
                     <p class="text-sm text-gray-500 mb-1">{{ $book->author }}</p>
-                    <p class="font-black text-blue-600">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
+                    <div class="mt-1 flex items-center justify-between gap-3">
+                        <p class="font-black text-blue-600">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
+                        <span class="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] {{ $book->stock > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700' }}">
+                            Stok {{ $book->stock }}
+                        </span>
+                    </div>
                 </div>
             @empty
                 <div class="col-span-full py-20 text-center">
@@ -132,6 +137,9 @@
                         <div>
                             <p class="text-xs text-gray-400 font-bold">Harga</p>
                             <p class="text-3xl font-black text-gray-900">Rp {{ number_format($selectedBook->price, 0, ',', '.') }}
+                            </p>
+                            <p class="mt-2 text-xs font-black uppercase tracking-[0.2em] {{ $selectedBook->stock > 0 ? 'text-emerald-600' : 'text-red-600' }}">
+                                Stok {{ $selectedBook->stock }}
                             </p>
                         </div>
 

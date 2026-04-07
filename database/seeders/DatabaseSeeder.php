@@ -25,8 +25,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        // Category::factory(5)->create();
-        
-        // Book::factory(20)->create();
+        $category = ['Aksi', 'Adventure', 'Animasi', 'Biografi', 'Fantasi', 'Fiksi Ilmiah', 'Horor', 'Misteri', 'Romantis', 'Sejarah'];
+        foreach ($category as $cat) {
+            Category::factory()->create([
+                'name' => $cat
+            ]);
+        }
+
+        Book::factory(20)->create();
     }
 }
