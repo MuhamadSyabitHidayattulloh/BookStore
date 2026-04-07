@@ -12,17 +12,8 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $isLogin = true; // State untuk tab
-
     // Form Properties
     public $name, $email, $password, $password_confirmation, $phone, $address, $avatar;
-
-    public function toggle()
-    {
-        $this->isLogin = !$this->isLogin;
-        $this->resetValidation();
-        $this->reset(['name', 'password', 'password_confirmation', 'phone', 'address', 'avatar']);
-    }
 
     public function login()
     {
