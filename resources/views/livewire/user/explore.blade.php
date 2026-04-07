@@ -97,9 +97,7 @@
 
     <!-- Modal Detail Buku -->
     @if ($selectedBook)
-        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-transparent">
-            <div class="fixed inset-0 bg-white/10 backdrop-blur-md" wire:click="closeModal"></div>
-
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 p-4 backdrop-blur-sm" wire:click.self="closeModal">
             <div
                 class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
                 <!-- Cover Section -->

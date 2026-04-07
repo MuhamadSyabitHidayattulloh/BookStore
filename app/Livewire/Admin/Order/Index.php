@@ -43,6 +43,11 @@ class Index extends Component
         $this->selectedOrder = Order::with(['user', 'items.book'])->find($id);
     }
 
+    public function closeModal(): void
+    {
+        $this->selectedOrder = null;
+    }
+
     public function render()
     {
         return view('livewire.admin.order.index');

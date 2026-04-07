@@ -73,8 +73,7 @@
     </section>
 
     @if ($isOpen)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-transparent px-4">
-            <div class="fixed inset-0" wire:click="$set('isOpen', false)"></div>
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" wire:click.self="closeModal">
             <div class="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $bookId ? 'Edit Buku' : 'Tambah Buku' }}</h2>
 
@@ -127,7 +126,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 border-t pt-4">
-                        <button type="button" wire:click="$set('isOpen', false)" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
+                        <button type="button" wire:click="closeModal" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
                         <button type="submit" wire:loading.attr="disabled" wire:target="save" class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:bg-slate-300">
                             <span wire:loading.remove wire:target="save">Simpan</span>
                             <span wire:loading wire:target="save">Menyimpan...</span>

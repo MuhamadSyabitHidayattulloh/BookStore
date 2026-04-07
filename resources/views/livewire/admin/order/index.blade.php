@@ -69,12 +69,11 @@
     </section>
 
     @if($selectedOrder)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-transparent px-4">
-            <div class="fixed inset-0" wire:click="$set('selectedOrder', null)"></div>
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" wire:click.self="closeModal">
             <div class="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <div class="mb-4 flex items-center justify-between border-b pb-3">
                     <h2 class="text-lg font-black text-slate-900">Detail Pesanan: {{ $selectedOrder->order_number }}</h2>
-                    <button wire:click="$set('selectedOrder', null)" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
+                    <button type="button" wire:click="closeModal" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
                 </div>
 
                 <div class="space-y-4">

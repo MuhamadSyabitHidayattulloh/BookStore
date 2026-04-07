@@ -51,9 +51,15 @@ class Index extends Component
     {
         $this->validate(['name' => 'required|string|unique:categories,name,'.$this->categoryId]);
         Category::updateOrCreate(['id' => $this->categoryId], ['name' => $this->name]);
+        $this->closeModal();
+        session()->flash('message', 'Berhasil Disimpan!');
+    }
+
+    public function closeModal(): void
+    {
         $this->isOpen = false;
         $this->resetFields();
-        session()->flash('message', 'Berhasil Disimpan!');
+        $this->resetValidation();
     }
 
     public function delete($id)

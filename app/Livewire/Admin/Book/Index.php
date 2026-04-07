@@ -110,9 +110,15 @@ class Index extends Component
         }
 
         Book::updateOrCreate(['id' => $this->bookId], $data);
+        $this->closeModal();
+        session()->flash('message', 'Data Berhasil Disimpan!');
+    }
+
+    public function closeModal(): void
+    {
         $this->isOpen = false;
         $this->resetFields();
-        session()->flash('message', 'Data Berhasil Disimpan!');
+        $this->resetValidation();
     }
 
     public function delete($id)

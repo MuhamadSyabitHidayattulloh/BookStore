@@ -110,9 +110,15 @@ class Index extends Component
 
         User::updateOrCreate(['id' => $this->userId], $data);
 
+        $this->closeModal();
+        session()->flash('message', 'User berhasil diproses!');
+    }
+
+    public function closeModal(): void
+    {
         $this->isOpen = false;
         $this->resetFields();
-        session()->flash('message', 'User berhasil diproses!');
+        $this->resetValidation();
     }
 
     public function delete($id)
