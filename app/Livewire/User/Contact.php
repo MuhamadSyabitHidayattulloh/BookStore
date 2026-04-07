@@ -30,7 +30,7 @@ class Contact extends Component
         ]);
 
         $this->reset();
-        session()->flash('message', 'Pesan Anda telah terkirim!');
+        $this->dispatch('toast', type: 'success', message: 'Pesan Anda telah terkirim!');
     }
 
     public function render()

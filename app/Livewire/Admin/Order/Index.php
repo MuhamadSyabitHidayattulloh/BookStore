@@ -35,7 +35,7 @@ class Index extends Component
     public function updateStatus($orderId, $status)
     {
         Order::find($orderId)->update(['status' => $status]);
-        session()->flash('message', 'Status pesanan berhasil diperbarui!');
+        $this->dispatch('toast', type: 'success', message: 'Status pesanan berhasil diperbarui!');
     }
 
     public function showDetail($id)

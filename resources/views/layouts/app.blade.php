@@ -8,22 +8,25 @@
     @livewireStyles
 </head>
     <body class="bg-slate-50 font-sans antialiased text-slate-900">
-    <div class="pointer-events-none fixed right-4 top-4 z-[100] flex w-full max-w-sm flex-col gap-3">
+    <div id="global-toast-container" class="pointer-events-none fixed right-4 top-4 z-[100] flex w-full max-w-sm flex-col gap-3">
         @if (session()->has('message'))
-            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3200)" class="pointer-events-auto rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 shadow-lg shadow-emerald-100">
-                {{ session('message') }}
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3200)" class="toast-base toast-success pointer-events-auto">
+                <p>{{ session('message') }}</p>
+                <div class="toast-progress toast-progress-success" style="animation-duration: 3200ms;"></div>
             </div>
         @endif
 
         @if (session()->has('warning'))
-            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3600)" class="pointer-events-auto rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700 shadow-lg shadow-amber-100">
-                {{ session('warning') }}
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3600)" class="toast-base toast-warning pointer-events-auto">
+                <p>{{ session('warning') }}</p>
+                <div class="toast-progress toast-progress-warning" style="animation-duration: 3600ms;"></div>
             </div>
         @endif
 
         @if (session()->has('error'))
-            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3800)" class="pointer-events-auto rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700 shadow-lg shadow-red-100">
-                {{ session('error') }}
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms x-init="setTimeout(() => show = false, 3800)" class="toast-base toast-error pointer-events-auto">
+                <p>{{ session('error') }}</p>
+                <div class="toast-progress toast-progress-error" style="animation-duration: 3800ms;"></div>
             </div>
         @endif
     </div>

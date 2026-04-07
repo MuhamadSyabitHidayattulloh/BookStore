@@ -17,13 +17,13 @@ class Index extends Component
     public function markAsRead($id)
     {
         Contact::find($id)->update(['is_read' => true]);
-        session()->flash('message', 'Pesan ditandai sebagai telah dibaca.');
+        $this->dispatch('toast', type: 'success', message: 'Pesan ditandai sebagai telah dibaca.');
     }
 
     public function delete($id)
     {
         Contact::destroy($id);
-        session()->flash('message', 'Pesan berhasil dihapus.');
+        $this->dispatch('toast', type: 'success', message: 'Pesan berhasil dihapus.');
     }
 
     public function render()

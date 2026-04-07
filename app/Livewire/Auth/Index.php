@@ -28,7 +28,7 @@ class Index extends Component
             return redirect()->intended($role === 'admin' ? '/admin/dashboard' : '/explore');
         }
 
-        session()->flash('error', 'Email atau password salah.');
+        $this->dispatch('toast', type: 'error', message: 'Email atau password salah.');
     }
 
     public function register()

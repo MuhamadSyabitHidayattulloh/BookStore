@@ -111,7 +111,7 @@ class Index extends Component
 
         Book::updateOrCreate(['id' => $this->bookId], $data);
         $this->closeModal();
-        session()->flash('message', 'Data Berhasil Disimpan!');
+        $this->dispatch('toast', type: 'success', message: 'Data berhasil disimpan!');
     }
 
     public function closeModal(): void
@@ -128,7 +128,7 @@ class Index extends Component
             Storage::disk('public')->delete($book->cover);
         }
         $book->delete();
-        session()->flash('message', 'Buku berhasil dihapus.');
+        $this->dispatch('toast', type: 'success', message: 'Buku berhasil dihapus.');
     }
 
     private function resetFields()

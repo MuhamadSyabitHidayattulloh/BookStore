@@ -102,7 +102,7 @@ class Explore extends Component
             ->first();
 
         if ($cart) {
-            session()->flash('warning', 'Buku ini sudah ada di keranjang Anda.');
+            $this->dispatch('toast', type: 'warning', message: 'Buku ini sudah ada di keranjang Anda.');
 
             return;
         } else {
@@ -114,7 +114,7 @@ class Explore extends Component
         }
 
         // Kirim notifikasi (opsional)
-        session()->flash('message', 'Buku berhasil ditambahkan ke keranjang!');
+        $this->dispatch('toast', type: 'success', message: 'Buku berhasil ditambahkan ke keranjang!');
     }
 
     public function render()

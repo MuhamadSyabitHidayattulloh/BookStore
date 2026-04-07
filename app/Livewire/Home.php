@@ -79,7 +79,7 @@ class Home extends Component
             'message' => ['required', 'string', 'max:1000'],
         ]);
 
-        session()->flash('warning', 'Silakan login terlebih dahulu untuk mengirim pesan.');
+        $this->dispatch('toast', type: 'warning', message: 'Silakan login terlebih dahulu untuk mengirim pesan.');
     }
 
     public function render()

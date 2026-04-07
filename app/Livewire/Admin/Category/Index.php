@@ -52,7 +52,7 @@ class Index extends Component
         $this->validate(['name' => 'required|string|unique:categories,name,'.$this->categoryId]);
         Category::updateOrCreate(['id' => $this->categoryId], ['name' => $this->name]);
         $this->closeModal();
-        session()->flash('message', 'Berhasil Disimpan!');
+        $this->dispatch('toast', type: 'success', message: 'Berhasil disimpan!');
     }
 
     public function closeModal(): void
@@ -66,10 +66,12 @@ class Index extends Component
     {
         $cat = Category::findOrFail($id);
         if ($cat->books()->count() > 0) {
-            return session()->flash('error', 'Kategori ada isinya!');
+            $this->dispatch('toast', type: 'error', message: 'Kategori ada isinya!');
+
+            return;
         }
         $cat->delete();
-        session()->flash('message', 'Kategori berhasil dihapus.');
+        $this->dispatch('toast', type: 'success', message: 'Kategori berhasil dihapus.');
     }
 
     private function resetFields()

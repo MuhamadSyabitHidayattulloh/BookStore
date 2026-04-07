@@ -111,7 +111,7 @@ class Index extends Component
         User::updateOrCreate(['id' => $this->userId], $data);
 
         $this->closeModal();
-        session()->flash('message', 'User berhasil diproses!');
+        $this->dispatch('toast', type: 'success', message: 'User berhasil diproses!');
     }
 
     public function closeModal(): void
@@ -128,7 +128,7 @@ class Index extends Component
             Storage::disk('public')->delete($user->avatar);
         }
         $user->delete();
-        session()->flash('message', 'User berhasil dihapus.');
+        $this->dispatch('toast', type: 'success', message: 'User berhasil dihapus.');
     }
 
     private function resetFields()
