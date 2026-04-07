@@ -36,7 +36,7 @@
                 <!-- Subject -->
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Subjek
-                        Pesan</label>
+                        Pesan <span class="text-red-500">*</span></label>
                     <input type="text" wire:model.live="subject" placeholder="Contoh: Kendala Pembayaran"
                         class="w-full border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none transition border text-sm">
                     @error('subject')
@@ -47,7 +47,7 @@
                 <!-- Message -->
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Pesan
-                        Anda</label>
+                        Anda <span class="text-red-500">*</span></label>
                     <textarea wire:model.live="message" rows="5" placeholder="Tuliskan detail pertanyaan Anda di sini..."
                         class="w-full border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none transition border text-sm"></textarea>
                     @error('message')

@@ -74,6 +74,7 @@
                 <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $categoryId ? 'Edit' : 'Tambah' }} Kategori</h2>
                 <form wire:submit.prevent="save" class="space-y-4">
                     <div>
+                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Nama Kategori <span class="text-red-500">*</span></label>
                         <input type="text" wire:model="name" placeholder="Nama Kategori"
                             class="w-full rounded-xl border border-slate-200 p-3 text-sm outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100">
                         @error('name')

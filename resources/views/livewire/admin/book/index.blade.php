@@ -79,12 +79,15 @@
                 <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $bookId ? 'Edit Buku' : 'Tambah Buku' }}</h2>
 
                 <form wire:submit.prevent="save" class="space-y-3">
+                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Judul <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="title" placeholder="Judul" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100">
                     @error('title') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
 
+                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Penulis <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="author" placeholder="Penulis" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100">
                     @error('author') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
 
+                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Kategori <span class="text-red-500">*</span></label>
                     <select wire:model="category_id" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100">
                         <option value="">Pilih Kategori</option>
                         @foreach ($this->categories as $cat)
@@ -95,18 +98,22 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <div>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Harga <span class="text-red-500">*</span></label>
                             <input type="number" wire:model="price" placeholder="Harga" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100">
                             @error('price') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Stok <span class="text-red-500">*</span></label>
                             <input type="number" wire:model="stock" placeholder="Stok" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100">
                             @error('stock') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
+                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Deskripsi <span class="text-red-500">*</span></label>
                     <textarea wire:model="description" placeholder="Deskripsi" class="h-24 w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-300 focus:ring-4 focus:ring-blue-100"></textarea>
                     @error('description') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
 
+                    <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Cover @if (!$bookId)<span class="text-red-500">*</span>@endif</label>
                     <input type="file" wire:model="cover" class="text-sm">
                     @error('cover') <p class="text-xs font-bold text-red-500">{{ $message }}</p> @enderror
 

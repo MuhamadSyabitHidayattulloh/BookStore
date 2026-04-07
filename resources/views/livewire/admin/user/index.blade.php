@@ -94,6 +94,7 @@
                             </div>
                         @endif
                         <div class="flex-1">
+                            <label class="mb-1 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Avatar</label>
                             <input type="file" wire:model="avatar" class="text-xs">
                             <p class="mt-1 text-[10px] italic text-slate-500">PNG/JPG max 1MB.</p>
                             @error('avatar') <span class="text-[10px] font-bold text-red-500">{{ $message }}</span> @enderror
@@ -102,10 +103,12 @@
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Nama <span class="text-red-500">*</span></label>
                             <input type="text" wire:model="name" placeholder="Nama Lengkap" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
                             @error('name') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Email <span class="text-red-500">*</span></label>
                             <input type="email" wire:model="email" placeholder="Email" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
                             @error('email') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                         </div>
@@ -113,10 +116,12 @@
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <input type="password" wire:model="password" placeholder="Password {{ $userId ? '(Opsional)' : '' }}" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Password @if(!$userId)<span class="text-red-500">*</span>@endif</label>
+                            <input type="password" wire:model="password" placeholder="Password" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
                             @error('password') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Role <span class="text-red-500">*</span></label>
                             <select wire:model="role" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
@@ -126,11 +131,13 @@
                     </div>
 
                     <div>
+                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Nomor Telepon</label>
                         <input type="text" wire:model="phone" placeholder="Nomor Telepon" class="w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100">
                         @error('phone') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
+                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Alamat</label>
                         <textarea wire:model="address" placeholder="Alamat Lengkap" class="h-20 w-full rounded-xl border border-slate-200 p-2.5 text-sm outline-none focus:border-emerald-300 focus:ring-4 focus:ring-emerald-100"></textarea>
                         @error('address') <p class="mt-1 text-[10px] font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>

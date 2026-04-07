@@ -65,13 +65,13 @@
 
                     <form class="mt-6 space-y-4">
                         <div>
-                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Phone</label>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Phone <span class="text-red-500">*</span></label>
                             <input type="text" wire:model.live="phone" placeholder="08xxxxxxxxxx" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100">
                             @error('phone') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
-                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Alamat</label>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Alamat <span class="text-red-500">*</span></label>
                             <textarea wire:model.live="address" rows="4" placeholder="Alamat lengkap pengiriman" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
                             @error('address') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                         </div>

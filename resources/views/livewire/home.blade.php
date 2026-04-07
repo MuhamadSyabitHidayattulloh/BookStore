@@ -177,25 +177,25 @@
                 <form wire:submit.prevent="sendContact" class="mt-6 space-y-5">
                     <div class="grid gap-5 sm:grid-cols-2">
                         <div>
-                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Name</label>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Name <span class="text-red-500">*</span></label>
                             <input type="text" wire:model.live="name" placeholder="Nama Anda" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100">
                             @error('name') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Email</label>
+                            <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Email <span class="text-red-500">*</span></label>
                             <input type="email" wire:model.live="email" placeholder="email@domain.com" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100">
                             @error('email') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Subject</label>
+                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Subject <span class="text-red-500">*</span></label>
                         <input type="text" wire:model.live="subject" placeholder="Contoh: Pertanyaan kerja sama" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100">
                         @error('subject') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Message</label>
+                        <label class="mb-2 block text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Message <span class="text-red-500">*</span></label>
                         <textarea rows="6" wire:model.live="message" placeholder="Tuliskan pesan Anda di sini..." class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100"></textarea>
                         @error('message') <span class="mt-1 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
                     </div>
