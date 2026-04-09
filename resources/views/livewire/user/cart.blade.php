@@ -136,8 +136,16 @@
                         <span>Item dipilih</span>
                         <span class="font-black text-slate-900">{{ count($selectedItems) }}</span>
                     </div>
+                    <div class="mt-3 flex items-center justify-between text-sm text-slate-600">
+                        <span>Subtotal Barang</span>
+                        <span class="font-black text-slate-900">Rp {{ number_format($this->selectedItemsTotal, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between text-sm text-slate-600">
+                        <span>Ongkos Kirim</span>
+                        <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Gratis</span>
+                    </div>
                     <div class="mt-3 flex items-center justify-between border-t border-slate-200 pt-4">
-                        <span class="text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Total Estimasi</span>
+                        <span class="text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Total Bayar</span>
                         <p class="text-2xl font-black text-slate-950">Rp {{ number_format($this->selectedItemsTotal, 0, ',', '.') }}</p>
                     </div>
                     @error('selectedItems') <span class="mt-3 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
