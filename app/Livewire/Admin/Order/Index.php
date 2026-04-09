@@ -17,6 +17,8 @@ class Index extends Component
 
     public $selectedOrder = null; // Untuk Modal Detail
 
+    public $isOpen = false;
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -63,10 +65,12 @@ class Index extends Component
         }
 
         $this->selectedOrder = $order;
+        $this->isOpen = true;
     }
 
     public function closeModal(): void
     {
+        $this->isOpen = false;
         $this->selectedOrder = null;
     }
 

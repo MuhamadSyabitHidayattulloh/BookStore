@@ -67,8 +67,7 @@
         </table>
     </section>
 
-    @if ($isOpen)
-        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
+    <div x-data="{ modalOpen: @entangle('isOpen').live }" x-cloak x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; $wire.closeModal()" x-on:keydown.escape.window="modalOpen = false; $wire.closeModal()">
             <div class="relative w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $categoryId ? 'Edit' : 'Tambah' }} Kategori</h2>
                 <form wire:submit.prevent="save" class="space-y-4">
@@ -82,7 +81,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 border-t pt-4">
-                        <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
+                        <button type="button" x-on:click="modalOpen = false; $wire.closeModal()" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
                         <button type="submit" wire:loading.attr="disabled" wire:target="save"
                             class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300">
                             <span wire:loading.remove wire:target="save">Simpan</span>
@@ -91,6 +90,5 @@
                     </div>
                 </form>
             </div>
-        </div>
-    @endif
+    </div>
 </div>

@@ -75,11 +75,11 @@
     </div>
 
     @if($selectedOrder)
-        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
+        <div x-data="{ modalOpen: @entangle('isOpen').live }" x-cloak x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; $wire.closeModal()" x-on:keydown.escape.window="modalOpen = false; $wire.closeModal()">
             <div class="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <div class="mb-4 flex items-center justify-between border-b pb-3">
                     <h2 class="text-lg font-black text-slate-900">Detail Pesanan: {{ $selectedOrder->order_number }}</h2>
-                    <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
+                    <button type="button" x-on:click="modalOpen = false; $wire.closeModal()" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
                 </div>
 
                 <div class="space-y-4">
