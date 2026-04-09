@@ -60,6 +60,19 @@
                     @error('password') <span class="text-red-500 text-xs col-span-2">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-500">Nomor Telepon</label>
+                        <input type="text" wire:model="phone" placeholder="08xxxxxxxxxx" class="w-full mt-1 border rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-500">Alamat</label>
+                        <input type="text" wire:model="address" placeholder="Alamat lengkap" class="w-full mt-1 border rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        @error('address') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
                 <div>
                     <label class="block text-xs font-semibold uppercase text-gray-500">Avatar</label>
                     <input type="file" wire:model="avatar" class="text-xs mt-1">
