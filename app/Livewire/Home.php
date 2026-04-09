@@ -75,16 +75,26 @@ class Home extends Component
     }
 
     #[Computed]
+    public function cartBookIds()
+    {
+        if (! Auth::check()) {
+            return collect();
+        }
+
+        return Cart::query()
+            ->where('user_id', Auth::id())
+            ->pluck('book_id')
+            ->map(fn ($id) => (int) $id);
+    }
+
+    #[Computed]
     public function selectedBookInCart()
     {
         if (! Auth::check() || ! $this->selectedBook) {
             return false;
         }
 
-        return Cart::query()
-            ->where('user_id', Auth::id())
-            ->where('book_id', $this->selectedBook->id)
-            ->exists();
+        return $this->cartBookIds->contains((int) $this->selectedBook->id);
     }
 
     public function sendContact()
@@ -104,6 +114,12 @@ class Home extends Component
         $book = Book::with('category')->find($id);
         if (! $book) {
             $this->dispatch('toast', type: 'error', message: 'Buku tidak ditemukan.');
+
+            return;
+        }
+
+        if ((int) $book->stock <= 0) {
+            $this->dispatch('toast', type: 'error', message: 'Stok buku habis.');
 
             return;
         }

@@ -110,6 +110,12 @@ class Explore extends Component
             return;
         }
 
+        if ((int) $book->stock <= 0) {
+            $this->dispatch('toast', type: 'error', message: 'Stok buku habis.');
+
+            return;
+        }
+
         // Cek apakah buku sudah ada di keranjang user ini
         $cart = Cart::where('user_id', Auth::id())
             ->where('book_id', $bookId)

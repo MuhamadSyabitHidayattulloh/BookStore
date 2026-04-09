@@ -49,6 +49,11 @@
                                 Di Keranjang
                             </span>
                         @endif
+                        @if ((int) $book->stock <= 0)
+                            <span class="absolute right-2 top-2 z-10 rounded-full bg-red-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                                Stok Habis
+                            </span>
+                        @endif
                         <img src="{{ asset('storage/' . $book->cover) }}"
                             class="h-full w-full object-cover group-hover:scale-110 transition duration-500">
                         <div
@@ -62,9 +67,15 @@
                     <p class="text-sm text-gray-500 mb-1">{{ $book->author }}</p>
                     <div class="mt-1 flex items-center justify-between gap-3">
                         <p class="font-black text-blue-600">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
-                        <span class="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] {{ $book->stock > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700' }}">
-                            Stok {{ $book->stock }}
-                        </span>
+                        @if ((int) $book->stock > 0)
+                            <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">
+                                Stok {{ $book->stock }}
+                            </span>
+                        @else
+                            <span class="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-red-700">
+                                Stok Habis
+                            </span>
+                        @endif
                     </div>
                 </div>
             @empty
@@ -154,6 +165,10 @@
                                 class="inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-8 py-4 font-bold text-emerald-700 ring-1 ring-emerald-200 transition hover:bg-emerald-100">
                                 Sudah di Keranjang
                             </a>
+                        @elseif ((int) $selectedBook->stock <= 0)
+                            <span class="inline-flex items-center justify-center rounded-2xl bg-red-50 px-8 py-4 font-bold text-red-700 ring-1 ring-red-200">
+                                Stok Habis
+                            </span>
                         @else
                             <button wire:click="addToCart({{ $selectedBook->id }})" wire:loading.attr="disabled" wire:target="addToCart"
                                 class="rounded-2xl bg-blue-600 px-8 py-4 font-bold text-white shadow-xl shadow-blue-200 transition active:scale-95 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
