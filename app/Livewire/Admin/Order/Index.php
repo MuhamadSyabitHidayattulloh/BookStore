@@ -11,7 +11,7 @@ class Index extends Component
 {
     use WithPagination;
 
-    private const ALLOWED_STATUSES = ['process', 'shipped', 'completed', 'cancelled'];
+    private const ALLOWED_STATUSES = ['process', 'shipped', 'cancelled'];
 
     public $search = '';
 

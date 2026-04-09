@@ -42,17 +42,19 @@
                         </td>
                         <td class="px-4 py-3 font-semibold text-slate-800">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-xs">
-                            <select wire:change="updateStatus({{ $order->id }}, $event.target.value)" wire:loading.attr="disabled" wire:target="updateStatus"
-                                class="rounded-full border-none px-3 py-1 font-bold ring-1 ring-slate-200 shadow-sm
-                                {{ $order->status == 'process' ? 'bg-blue-50 text-blue-700' : '' }}
-                                {{ $order->status == 'shipped' ? 'bg-orange-50 text-orange-700' : '' }}
-                                {{ $order->status == 'completed' ? 'bg-emerald-50 text-emerald-700' : '' }}
-                                {{ $order->status == 'cancelled' ? 'bg-red-50 text-red-700' : '' }}">
-                                <option value="process" {{ $order->status == 'process' ? 'selected' : '' }}>DI PROSES</option>
-                                <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>DI KIRIM</option>
-                                <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>SELESAI</option>
-                                <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>BATAL</option>
-                            </select>
+                            @if ($order->status === 'completed')
+                                <span class="rounded-full bg-emerald-50 px-3 py-1 font-bold text-emerald-700 ring-1 ring-emerald-100">SELESAI</span>
+                            @else
+                                <select wire:change="updateStatus({{ $order->id }}, $event.target.value)" wire:loading.attr="disabled" wire:target="updateStatus"
+                                    class="rounded-full border-none px-3 py-1 font-bold ring-1 ring-slate-200 shadow-sm
+                                    {{ $order->status == 'process' ? 'bg-blue-50 text-blue-700' : '' }}
+                                    {{ $order->status == 'shipped' ? 'bg-orange-50 text-orange-700' : '' }}
+                                    {{ $order->status == 'cancelled' ? 'bg-red-50 text-red-700' : '' }}">
+                                    <option value="process" {{ $order->status == 'process' ? 'selected' : '' }}>DI PROSES</option>
+                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>DI KIRIM</option>
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>BATAL</option>
+                                </select>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-center">
                             <button wire:click="showDetail({{ $order->id }})" wire:loading.attr="disabled" wire:target="showDetail({{ $order->id }})" class="rounded-xl bg-slate-100 px-3 py-1 text-slate-700 transition hover:bg-slate-200 disabled:opacity-60">Detail</button>

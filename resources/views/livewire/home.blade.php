@@ -17,9 +17,15 @@
                 </p>
 
                 <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
-                        Masuk Sekarang
-                    </a>
+                    @auth
+                        <a href="{{ route('user.explore') }}" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
+                            Mulai Belanja
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
+                            Masuk Sekarang
+                        </a>
+                    @endauth
                     <a href="#popular" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
                         Lihat Buku Populer
                     </a>
@@ -123,7 +129,7 @@
 
             <div class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                 @forelse ($this->popularBooks as $book)
-                    <article class="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <article wire:click="showDetail({{ $book->id }})" class="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                         <div class="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-slate-100">
                             <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                             <span class="absolute left-2 top-2 rounded-full bg-blue-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
@@ -143,6 +149,76 @@
             </div>
         </div>
     </section>
+
+    <div wire:loading.flex wire:target="showDetail" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/35 backdrop-blur-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-xl">
+            Memuat detail buku...
+        </div>
+    </div>
+
+    @if ($selectedBook)
+        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 p-4 backdrop-blur-sm" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" x-on:keydown.escape.window="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
+            <div class="relative w-full max-w-4xl overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl">
+                <div class="flex max-h-[90vh] flex-col overflow-y-auto md:flex-row">
+                    <div class="flex w-full items-center justify-center bg-slate-50 p-8 md:w-1/2">
+                        <img src="{{ asset('storage/' . $selectedBook->cover) }}" class="max-h-[450px] rounded-xl shadow-2xl rotate-2" alt="{{ $selectedBook->title }}">
+                    </div>
+
+                    <div class="w-full p-8 md:w-1/2 md:p-12">
+                        <div class="flex items-start justify-between">
+                            <span class="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-blue-600">
+                                {{ $selectedBook->category->name ?? 'Tanpa Kategori' }}
+                            </span>
+                            <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" class="text-2xl text-gray-400 transition hover:text-gray-900">&times;</button>
+                        </div>
+
+                        <h2 class="mt-4 text-3xl font-black leading-tight text-gray-900">{{ $selectedBook->title }}</h2>
+                        <p class="mt-2 text-gray-500">Karya <span class="font-bold text-gray-800">{{ $selectedBook->author }}</span></p>
+
+                        <div class="mt-8">
+                            <h4 class="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">Tentang Buku</h4>
+                            <p class="h-32 overflow-y-auto pr-2 text-sm leading-relaxed text-gray-600">
+                                {{ $selectedBook->description ?: 'Deskripsi buku belum tersedia.' }}
+                            </p>
+                        </div>
+
+                        <div class="mt-10 flex items-end justify-between gap-4">
+                            <div>
+                                <p class="text-xs font-bold text-gray-400">Harga</p>
+                                <p class="text-3xl font-black text-gray-900">Rp {{ number_format($selectedBook->price, 0, ',', '.') }}</p>
+                                <p class="mt-2 text-xs font-black uppercase tracking-[0.2em] {{ $selectedBook->stock > 0 ? 'text-emerald-600' : 'text-red-600' }}">
+                                    Stok {{ $selectedBook->stock }}
+                                </p>
+                            </div>
+
+                            @auth
+                                @if ($this->selectedBookInCart)
+                                    <a href="{{ route('user.cart') }}" class="inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-700 ring-1 ring-emerald-200 transition hover:bg-emerald-100">
+                                        Sudah di Keranjang
+                                    </a>
+                                @else
+                                    <button wire:click="addToCart({{ $selectedBook->id }})" wire:loading.attr="disabled" wire:target="addToCart"
+                                        class="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-xl shadow-blue-200 transition active:scale-95 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                                        <span wire:loading.remove wire:target="addToCart">Tambah ke Keranjang</span>
+                                        <span wire:loading wire:target="addToCart">Memproses...</span>
+                                    </button>
+                                @endif
+                            @else
+                                <div class="flex flex-col gap-2">
+                                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-xl shadow-blue-200 transition hover:bg-blue-700">
+                                        Login untuk Beli
+                                    </a>
+                                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-700 ring-1 ring-emerald-200 transition hover:bg-emerald-100">
+                                        Register
+                                    </a>
+                                </div>
+                            @endauth
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <section id="contact" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">

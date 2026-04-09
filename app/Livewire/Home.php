@@ -3,11 +3,15 @@
 namespace App\Livewire;
 
 use App\Models\Book;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Home extends Component
 {
+    public $selectedBook = null;
+
     public $name = '';
 
     public $email = '';
@@ -70,6 +74,19 @@ class Home extends Component
         ];
     }
 
+    #[Computed]
+    public function selectedBookInCart()
+    {
+        if (! Auth::check() || ! $this->selectedBook) {
+            return false;
+        }
+
+        return Cart::query()
+            ->where('user_id', Auth::id())
+            ->where('book_id', $this->selectedBook->id)
+            ->exists();
+    }
+
     public function sendContact()
     {
         $this->validate([
@@ -80,6 +97,56 @@ class Home extends Component
         ]);
 
         $this->dispatch('toast', type: 'warning', message: 'Silakan login terlebih dahulu untuk mengirim pesan.');
+    }
+
+    public function showDetail($id)
+    {
+        $book = Book::with('category')->find($id);
+        if (! $book) {
+            $this->dispatch('toast', type: 'error', message: 'Buku tidak ditemukan.');
+
+            return;
+        }
+
+        $this->selectedBook = $book;
+    }
+
+    public function closeModal()
+    {
+        $this->selectedBook = null;
+    }
+
+    public function addToCart($bookId)
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $book = Book::find($bookId);
+        if (! $book) {
+            $this->dispatch('toast', type: 'error', message: 'Buku tidak ditemukan.');
+
+            return;
+        }
+
+        $alreadyExists = Cart::query()
+            ->where('user_id', Auth::id())
+            ->where('book_id', $bookId)
+            ->exists();
+
+        if ($alreadyExists) {
+            $this->dispatch('toast', type: 'warning', message: 'Buku ini sudah ada di keranjang Anda.');
+
+            return;
+        }
+
+        Cart::create([
+            'user_id' => Auth::id(),
+            'book_id' => $book->id,
+            'quantity' => 1,
+        ]);
+
+        $this->dispatch('toast', type: 'success', message: 'Buku berhasil ditambahkan ke keranjang!');
     }
 
     public function render()
