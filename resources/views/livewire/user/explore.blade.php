@@ -100,9 +100,15 @@
         </div>
     </div>
 
+    <div wire:loading.flex wire:target="showDetail" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/35 backdrop-blur-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-xl">
+            Memuat detail buku...
+        </div>
+    </div>
+
     <!-- Modal Detail Buku -->
     @if ($selectedBook)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 p-4 backdrop-blur-sm" wire:click.self="closeModal">
+        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 p-4 backdrop-blur-sm" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
             <div
                 class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
                 <!-- Cover Section -->
@@ -118,7 +124,7 @@
                             class="text-[10px] font-black tracking-widest text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full">
                             {{ $selectedBook->category->name }}
                         </span>
-                        <button wire:click="closeModal"
+                        <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)"
                             class="text-gray-400 hover:text-gray-900 transition text-2xl">&times;</button>
                     </div>
 

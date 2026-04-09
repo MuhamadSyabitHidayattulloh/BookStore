@@ -77,7 +77,7 @@
     </section>
 
     @if($isOpen)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" wire:click.self="closeModal">
+        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
             <div class="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <h2 class="mb-4 border-b pb-3 text-lg font-black text-slate-900">{{ $userId ? 'Edit User' : 'Tambah User' }}</h2>
 
@@ -142,7 +142,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 border-t pt-4">
-                        <button type="button" wire:click="closeModal" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
+                        <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" class="px-3 py-2 text-sm font-medium text-slate-500">Batal</button>
                         <button type="submit" wire:loading.attr="disabled" wire:target="save" class="rounded-xl bg-emerald-600 px-5 py-2 text-sm font-bold text-white shadow transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300">
                             <span wire:loading.remove wire:target="save">{{ $userId ? 'Simpan Perubahan' : 'Simpan User' }}</span>
                             <span wire:loading wire:target="save">Menyimpan...</span>

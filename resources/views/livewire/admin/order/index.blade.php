@@ -68,12 +68,18 @@
         <div class="border-t bg-slate-50 p-4">{{ $this->orders->links() }}</div>
     </section>
 
+    <div wire:loading.flex wire:target="showDetail" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/35 backdrop-blur-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700 shadow-xl">
+            Memuat detail pesanan...
+        </div>
+    </div>
+
     @if($selectedOrder)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" wire:click.self="closeModal">
+        <div x-data="{ modalOpen: true }" x-show="modalOpen" x-transition.opacity.duration.150ms class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 px-4" x-on:click.self="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)">
             <div class="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
                 <div class="mb-4 flex items-center justify-between border-b pb-3">
                     <h2 class="text-lg font-black text-slate-900">Detail Pesanan: {{ $selectedOrder->order_number }}</h2>
-                    <button type="button" wire:click="closeModal" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
+                    <button type="button" x-on:click="modalOpen = false; setTimeout(() => $wire.closeModal(), 150)" class="text-2xl text-slate-400 transition hover:text-slate-600">&times;</button>
                 </div>
 
                 <div class="space-y-4">
