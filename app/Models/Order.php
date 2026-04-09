@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Order extends Model
 {
     public const PAYMENT_METHOD_COD = 'cod';
 
     public const PAYMENT_METHOD_BANK_TRANSFER = 'bank_transfer';
+
+    public const SHIPPING_FEE = 20000;
+
+    public const FREE_SHIPPING_MINIMUM = 100000;
 
     protected $fillable = [
         'order_number',
@@ -38,8 +41,29 @@ class Order extends Model
 
     protected static function generateOrderNumber(): string
     {
-        // ULID is lexicographically sortable and collision-resistant.
-        return 'ORD-'.now()->format('Ymd').'-'.Str::upper((string) Str::ulid());
+        $datePart = now()->format('Ymd');
+        $prefix = 'ORD-'.$datePart.'-';
+
+        // Keep order numbers human-readable: date + daily sequence.
+        $lastToday = static::query()
+            ->where('order_number', 'like', $prefix.'%')
+            ->whereDate('created_at', now()->toDateString())
+            ->lockForUpdate()
+            ->orderByDesc('id')
+            ->value('order_number');
+
+        $nextSequence = 1;
+        if ($lastToday) {
+            $lastSequence = (int) substr((string) $lastToday, -4);
+            $nextSequence = $lastSequence + 1;
+        }
+
+        return $prefix.str_pad((string) $nextSequence, 4, '0', STR_PAD_LEFT);
+    }
+
+    public static function calculateShippingFee(int $subtotal): int
+    {
+        return $subtotal > static::FREE_SHIPPING_MINIMUM ? 0 : static::SHIPPING_FEE;
     }
 
     public function user()

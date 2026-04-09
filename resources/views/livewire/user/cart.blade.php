@@ -142,12 +142,17 @@
                     </div>
                     <div class="mt-3 flex items-center justify-between text-sm text-slate-600">
                         <span>Ongkos Kirim</span>
-                        <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Gratis</span>
+                        @if ($this->shippingFee === 0)
+                            <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Gratis</span>
+                        @else
+                            <span class="font-black text-slate-900">Rp {{ number_format($this->shippingFee, 0, ',', '.') }}</span>
+                        @endif
                     </div>
                     <div class="mt-3 flex items-center justify-between border-t border-slate-200 pt-4">
                         <span class="text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Total Bayar</span>
-                        <p class="text-2xl font-black text-slate-950">Rp {{ number_format($this->selectedItemsTotal, 0, ',', '.') }}</p>
+                        <p class="text-2xl font-black text-slate-950">Rp {{ number_format($this->grandTotal, 0, ',', '.') }}</p>
                     </div>
+                    <p class="mt-2 text-[11px] text-slate-500">* Ongkir Rp 20.000, gratis jika subtotal di atas Rp 100.000.</p>
                     @error('selectedItems') <span class="mt-3 block text-xs font-bold text-red-500">{{ $message }}</span> @enderror
 
                     <button wire:click="checkout" wire:loading.attr="disabled" wire:target="checkout" class="mt-6 w-full rounded-2xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300" @disabled(empty($selectedItems))>

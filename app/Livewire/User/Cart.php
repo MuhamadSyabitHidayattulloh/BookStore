@@ -155,7 +155,7 @@ class Cart extends Component
                     ->get()
                     ->keyBy('id');
 
-                $total = 0;
+                $subtotal = 0;
                 foreach ($selectedCarts as $cart) {
                     $book = $books->get($cart->book_id);
                     if (! $book) {
@@ -170,8 +170,10 @@ class Cart extends Component
                         ]);
                     }
 
-                    $total += $book->price * $cart->quantity;
+                    $subtotal += $book->price * $cart->quantity;
                 }
+
+                $shippingFee = Order::calculateShippingFee($subtotal);
 
                 $user?->update([
                     'phone' => $this->phone,
@@ -180,11 +182,17 @@ class Cart extends Component
 
                 $order = Order::create([
                     'user_id' => Auth::id(),
-                    'total_price' => $total,
+                    'total_price' => 0,
                     'status' => 'process',
                     'payment_method' => $this->paymentMethod,
                     'transfer_proof' => $transferProofPath,
                     'shipping_address' => $this->address,
+                ]);
+
+                $grandTotal = $subtotal + $shippingFee;
+
+                $order->update([
+                    'total_price' => $grandTotal,
                 ]);
 
                 foreach ($selectedCarts as $cart) {
@@ -231,6 +239,16 @@ class Cart extends Component
                 return in_array((string) $item->id, $this->selectedItems, true);
             })
             ->sum(fn ($item) => $item->book->price * $item->quantity);
+    }
+
+    public function getShippingFeeProperty()
+    {
+        return Order::calculateShippingFee((int) $this->selectedItemsTotal);
+    }
+
+    public function getGrandTotalProperty()
+    {
+        return (int) $this->selectedItemsTotal + (int) $this->shippingFee;
     }
 
     public function render()
